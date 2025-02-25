@@ -1,8 +1,9 @@
 //REQUIRE
-const cors =require('cors')
-const express = require('express')
-const MoviesRouters= require("./routers/MoviesRouters")
-const routeNotFound= require("./middleware/NotFoud")
+const cors =require('cors');
+const express = require('express');
+const MoviesRouters= require("./routers/MoviesRouters");
+const routeNotFound= require("./middleware/NotFoud");
+const handleError=require("./middleware/handleError");
 //SETUP
 const app = express()
 const { PORT, FRONT_URL }=process.env ; // "3000" "localhost"
@@ -16,6 +17,7 @@ app.use (cors({
 
 //MIDD. ERRORI
 app.use(routeNotFound)
+app.use(handleError)
 //ROUTES (ROTTE DELL'APP)
 app.use("/movies",MoviesRouters)
 app.listen(PORT, () => {
