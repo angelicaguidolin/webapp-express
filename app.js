@@ -1,11 +1,23 @@
+//REQUIRE
+const cors =require('cors')
 const express = require('express')
+const MoviesRouters= require("./routers/MoviesRouters")
+const routeNotFound= require("./middleware/NotFoud")
+//SETUP
 const app = express()
-const port = 3000
+const { PORT, FRONT_URL }=process.env ; // "3000" "localhost"
+//MIDDLEWARE (GLOBALI E PARSING)
+app.use(express.static('public'))
+app.use(express.json())
+//CORS (COMUNICAZIONE PER IL FRONT-END)
+app.use (cors({
+    origin: FRONT_URL
+}))
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
-
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+//MIDD. ERRORI
+app.use(routeNotFound)
+//ROUTES (ROTTE DELL'APP)
+app.use("/movies",MoviesRouters)
+app.listen(PORT, () => {
+  console.log(`Example app listening on port ${PORT}`)
 })
